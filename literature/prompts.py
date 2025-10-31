@@ -45,26 +45,41 @@ Provide the information in JSON format. Use Bulgarian language ONLY for the 'inf
 """
 
 
-def get_work_extraction_prompt(work_name, author_name):
+def get_work_extraction_prompt(work_name, author_name, document_context=""):
     """
-    Generate prompt for extracting literary work information using web search.
+    Generate prompt for extracting literary work information using document context.
     
     Args:
         work_name: The name of the literary work
         author_name: The name of the author
+        document_context: Relevant excerpts from source documents (optional)
         
     Returns:
         String prompt for Gemini
     """
+    context_section = ""
+    if document_context:
+        context_section = f"""
+IMPORTANT: You have been provided with relevant excerpts from authoritative source documents below.
+PRIMARILY use information from these documents for your analysis. Only use web search as a supplement
+if critical information is missing from the provided context.
+
+=== SOURCE DOCUMENT EXCERPTS ===
+{document_context}
+=== END OF SOURCE DOCUMENTS ===
+
+"""
+    
     return f"""
-You have access to Google Search. Use it to find accurate and reliable information about the literary work: "{work_name}" by {author_name}
+{context_section}You are analyzing the literary work: "{work_name}" by {author_name}
 
 IMPORTANT INSTRUCTIONS:
-1. DO NOT HALLUCINATE - Only provide information you find from reliable sources
-2. Search for literary analysis from reputable sources: academic papers, literary journals, educational websites, book reviews from established critics
-3. Verify information from multiple reliable sources
-4. If you cannot find certain information, provide what you can verify and be transparent about limitations
-5. Focus on well-documented literary analysis and criticism
+1. DO NOT HALLUCINATE - Only provide information from the source documents or reliable web sources
+2. PRIORITIZE the provided source document excerpts above - they are your primary information source
+3. If source documents have information, use them first before searching the web
+4. Use web search only to supplement missing information or verify facts
+5. If you cannot find certain information, provide what you can verify and be transparent about limitations
+6. Focus on well-documented literary analysis and criticism
 
 Please search and extract the following information:
 - name: The exact title of the literary work

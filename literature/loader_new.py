@@ -5,17 +5,19 @@ import json
 import os
 import time
 from gemini_extractor import GeminiExtractor
+from document_processor import DocumentProcessor
 
 
 class LiteratureLoader:
     """Main class for loading and processing literature data using Gemini with web search"""
     
-    def __init__(self, source):
+    def __init__(self, source, doc_path=None):
         """
         Initialize the loader.
         
         Args:
             source: Path to the JSON file containing works data
+            doc_path: Path to large document (optional)
         """
         self.source = source
         self.content = ""
@@ -24,6 +26,15 @@ class LiteratureLoader:
         self.author_cache = {}  # Cache for author information {author_name: author_info}
         self.processed_works_cache = {}  # Cache for already processed works {work_title: work_data}
         self.output_file = "results/processed_literature.json"
+        self.doc_processor = None
+        self.use_documents = False
+        
+        # Initialize document processor if path provided
+        if doc_path:
+            self.doc_processor = DocumentProcessor()
+            self.doc_path = doc_path
+            self.use_documents = True
+            print(f"📚 Document-based search enabled")
         
         with open(self.source, 'r', encoding='utf-8') as file:
             self.content = file.read()
@@ -54,7 +65,7 @@ class LiteratureLoader:
 
     def load(self):
         """
-        Load works from the source JSON file.
+        Load works from the source JSON file and prepare documents if enabled.
         
         Returns:
             self for method chaining
@@ -64,6 +75,14 @@ class LiteratureLoader:
         if 'works' in json_data:
             self.works = json_data['works']
         print(f"✓ Loaded {len(self.works)} work(s)")
+        
+        # Load and process document if enabled
+        if self.use_documents:
+            cache_loaded = self.doc_processor.load_from_cache()
+            if not cache_loaded:
+                print(f"\n📄 Processing document for the first time...")
+                print(f"   Document: {self.doc_path}")
+                self.doc_processor.load_documents(self.doc_path)
         
         return self
     
@@ -133,9 +152,17 @@ class LiteratureLoader:
             # Extract work information using web search
             work_extracted = False
             try:
-                print(f"  🔍 Searching for work analysis: {work_title}")
-                print(f"  DEBUG: Calling Gemini API with search for work analysis...")
-                work_info = self.gemini.extract_work_info(work_title, author_name)
+                # Get relevant context from documents if available
+                document_context = ""
+                if self.use_documents and self.doc_processor.document_chunks:
+                    print(f"  � Retrieving relevant document excerpts...")
+                    document_context = self.doc_processor.get_context_for_work(work_title, author_name, top_k=5)
+                    context_length = len(document_context)
+                    print(f"  ✓ Retrieved {context_length:,} characters of relevant context")
+                
+                print(f"  🔍 Analyzing work with {'document context + ' if document_context else ''}web search: {work_title}")
+                print(f"  DEBUG: Calling Gemini API for work analysis...")
+                work_info = self.gemini.extract_work_info(work_title, author_name, document_context)
                 print(f"  DEBUG: Gemini response received for work")
                 work["extracted_analysis"] = work_info
                 print(f"  ✓ Extracted {len(work_info.get('themes', []))} themes, "

@@ -6,7 +6,7 @@ import time
 from google import genai
 from google.genai import types
 
-api_key = "AIzaSyCawQtMobmFWgMbTpj3yJhQBqgkIMhLzGU"
+api_key = "YOUR_API_KEY"
 
 class LiteratureLoader:
     def __init__(self, source):

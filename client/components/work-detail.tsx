@@ -13,11 +13,17 @@ export function WorkDetail({ work }: WorkDetailProps) {
         <h2 className="font-mono text-4xl sm:text-5xl font-bold text-foreground text-balance leading-tight">
           {work.analysis.name}
         </h2>
-        {work.analysis.year && (
-          <div className="mt-3 text-sm text-muted-foreground">
+        <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+          {work.analysis.year && (
             <span className="font-medium text-accent">{work.analysis.year}</span>
-          </div>
-        )}
+          )}
+          {work.analysis.genre && (
+            <>
+              {work.analysis.year && <span className="text-border">•</span>}
+              <span className="font-medium">{work.analysis.genre}</span>
+            </>
+          )}
+        </div>
       </div>
 
       <Card className="p-6 sm:p-8 shadow-sm border border-border/60 bg-card/50">

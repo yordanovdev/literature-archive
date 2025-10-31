@@ -23,6 +23,7 @@ export interface Character {
 export interface Analysis {
   name: string
   year: string
+  genre: string
   motifs: Motif[]
   themes: Theme[]
   characters: Character[]
