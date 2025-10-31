@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { WorksList } from "@/components/works-list"
 import { WorkDetail } from "@/components/work-detail"
 import { SearchBar } from "@/components/search-bar"
@@ -12,6 +12,7 @@ export default function Page() {
   const [works] = useState<WorkData[]>(sampleData.works)
   const [selectedWork, setSelectedWork] = useState<WorkData | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
+  const workDetailRef = useRef<HTMLDivElement>(null)
 
   const filteredWorks = works.filter((work) => {
     const query = searchQuery.toLowerCase()
@@ -25,6 +26,20 @@ export default function Page() {
     )
     return workMatch || authorMatch || themeMatch || motifMatch
   })
+
+  const handleSelectWork = (work: WorkData) => {
+    setSelectedWork(work)
+    
+    // Scroll to work detail on mobile
+    if (workDetailRef.current && window.innerWidth < 1024) {
+      setTimeout(() => {
+        workDetailRef.current?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        })
+      }, 100)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -55,10 +70,10 @@ export default function Page() {
               <h2 className="font-serif text-xl sm:text-2xl font-semibold text-foreground">Works</h2>
               <span className="text-sm font-medium text-primary">{filteredWorks.length}</span>
             </div>
-            <WorksList works={filteredWorks} onSelectWork={setSelectedWork} selectedWork={selectedWork} />
+            <WorksList works={filteredWorks} onSelectWork={handleSelectWork} selectedWork={selectedWork} />
           </div>
 
-          <div>
+          <div ref={workDetailRef}>
             {selectedWork ? (
               <WorkDetail work={selectedWork} />
             ) : (
