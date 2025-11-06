@@ -7,9 +7,32 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" })
 
 export const metadata: Metadata = {
-  title: "Literary Archive",
-  description: "A sophisticated study companion for literature",
-    generator: 'v0.app'
+  title: "Литературен Архив",
+  description: "Съвременен помощник за изучаване на литература",
+  keywords: ["литература", "анализ", "произведения", "автори", "теми", "мотиви", "български"],
+  authors: [{ name: "Литературен Архив" }],
+  creator: "Литературен Архив",
+  openGraph: {
+    type: "website",
+    locale: "bg_BG",
+    url: "https://literature-archive.vercel.app",
+    title: "Литературен Архив",
+    description: "Колекция от литературни произведения с подробен анализ",
+    siteName: "Литературен Архив",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Литературен Архив",
+    description: "Колекция от литературни произведения с подробен анализ",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-icon.png",
+  },
+  generator: 'v0.app'
 }
 
 export default function RootLayout({

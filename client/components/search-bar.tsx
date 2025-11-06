@@ -15,7 +15,7 @@ export function SearchBar({ value, onChange }: SearchBarProps) {
       <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
       <Input
         type="text"
-        placeholder="Search authors, works, themes, motifs..."
+        placeholder="Търсене по автори, произведения, теми, мотиви..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="pl-10 pr-10 h-11 shadow-sm border-border/50 focus:border-primary/50 transition-colors"
@@ -29,7 +29,7 @@ export function SearchBar({ value, onChange }: SearchBarProps) {
           className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-foreground transition-colors"
         >
           <X className="h-4 w-4" />
-          <span className="sr-only">Clear search</span>
+          <span className="sr-only">Изчистване на търсенето</span>
         </Button>
       )}
     </div>
