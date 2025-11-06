@@ -22,7 +22,7 @@ export interface Character {
 
 export interface Analysis {
   name: string;
-  year: string;
+  year?: string | undefined;
   genre: string;
   motifs: Motif[];
   themes: Theme[];

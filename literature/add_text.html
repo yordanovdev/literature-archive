@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Text to Literature Works</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .progress {
+            background: #f0f0f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 8px;
+            height: 24px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .work-card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .work-card.has-text {
+            border-color: #4caf50;
+            background: #f8fdf9;
+        }
+
+        .work-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .work-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .work-number {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .work-author {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea.has-content {
+            border-color: #4caf50;
+            background: #f1f8f4;
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            position: sticky;
+            bottom: 20px;
+            background: white;
+            padding: 20px 0;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-load {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-load:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-download {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-download:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .status {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state h2 {
+            margin-bottom: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Add Text to Literature Works</h1>
+        <p class="subtitle">Paste text content for each work below</p>
+
+        <div id="status" class="status"></div>
+
+        <div class="progress">
+            <div class="progress-text">Progress: <span id="progressText">0/0 works completed</span></div>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill">0%</div>
+            </div>
+        </div>
+
+        <div id="worksContainer"></div>
+
+        <div class="buttons">
+            <button class="btn-load" onclick="loadWorks()">🔄 Reload from works.json</button>
+            <button class="btn-download" onclick="downloadJSON()">💾 Download JSON</button>
+            <button class="btn-save" onclick="saveWorks()">✅ Save to works.json</button>
+        </div>
+    </div>
+
+    <script>
+        let works = [];
+
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+
+        function updateProgress() {
+            const completed = works.filter(w => w.text && w.text.trim().length > 0).length;
+            const total = works.length;
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            document.getElementById('progressText').textContent = `${completed}/${total} works completed`;
+            document.getElementById('progressFill').style.width = `${percentage}%`;
+            document.getElementById('progressFill').textContent = `${percentage}%`;
+        }
+
+        function updateCharCount(index) {
+            const textarea = document.getElementById(`text-${index}`);
+            const charCount = document.getElementById(`count-${index}`);
+            const card = textarea.closest('.work-card');
+            const length = textarea.value.length;
+            
+            charCount.textContent = `${length.toLocaleString()} characters`;
+            
+            if (length > 0) {
+                textarea.classList.add('has-content');
+                card.classList.add('has-text');
+            } else {
+                textarea.classList.remove('has-content');
+                card.classList.remove('has-text');
+            }
+            
+            works[index].text = textarea.value;
+            updateProgress();
+        }
+
+        function renderWorks() {
+            const container = document.getElementById('worksContainer');
+            
+            if (works.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No works loaded</h2>
+                        <p>Click "Reload from works.json" to load your works</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = works.map((work, index) => {
+                const hasText = work.text && work.text.trim().length > 0;
+                const cardClass = hasText ? 'work-card has-text' : 'work-card';
+                const textareaClass = hasText ? 'has-content' : '';
+                const statusBadge = hasText ? '<span style="color: #4caf50; font-size: 12px; margin-left: 8px;">✓ Has text</span>' : '<span style="color: #999; font-size: 12px; margin-left: 8px;">Empty</span>';
+                
+                return `
+                    <div class="${cardClass}">
+                        <div class="work-header">
+                            <div class="work-title">${work.title || 'Unknown Title'}${statusBadge}</div>
+                            <div class="work-number">${index + 1}/${works.length}</div>
+                        </div>
+                        <div class="work-author">Author: ${work.author?.name || 'Unknown'}</div>
+                        <textarea 
+                            id="text-${index}" 
+                            placeholder="Paste or type text content for this work here..."
+                            oninput="updateCharCount(${index})"
+                            class="${textareaClass}"
+                        >${work.text || ''}</textarea>
+                        <div class="char-count" id="count-${index}">
+                            ${(work.text || '').length.toLocaleString()} characters
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            updateProgress();
+        }
+
+        async function loadWorks() {
+            try {
+                const response = await fetch('works.json');
+                if (!response.ok) throw new Error('Failed to load works.json');
+                
+                const data = await response.json();
+                works = data.works || [];
+                
+                renderWorks();
+                showStatus(`✅ Loaded ${works.length} works successfully!`, 'success');
+            } catch (error) {
+                showStatus(`❌ Error loading works.json: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        function downloadJSON() {
+            const dataStr = JSON.stringify({
+                version: "2.0",
+                works: works
+            }, null, 2);
+            
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'works.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            showStatus('✅ Downloaded works.json successfully!', 'success');
+        }
+
+        async function saveWorks() {
+            try {
+                // Update works with current textarea values
+                works.forEach((work, index) => {
+                    const textarea = document.getElementById(`text-${index}`);
+                    if (textarea) {
+                        work.text = textarea.value;
+                    }
+                });
+
+                const data = {
+                    version: "2.0",
+                    works: works
+                };
+
+                // Try to save via server (if running)
+                try {
+                    const response = await fetch('works.json', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        showStatus('✅ Saved to works.json successfully!', 'success');
+                        return;
+                    }
+                } catch (err) {
+                    console.log('Server save failed, trying download method...');
+                }
+
+                // Fallback to download
+                downloadJSON();
+                showStatus('✅ Downloaded works.json - please replace your original file!', 'success');
+            } catch (error) {
+                showStatus(`❌ Error saving: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        // Auto-load on page load
+        window.addEventListener('DOMContentLoaded', loadWorks);
+    </script>
+</body>
+</html>
