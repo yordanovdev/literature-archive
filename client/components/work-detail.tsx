@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card"
 import type { WorkData } from "@/lib/types"
 import { User } from "lucide-react"
+import { MindMap } from "@/components/mind-map"
 
 interface WorkDetailProps {
   work: WorkData
@@ -26,6 +27,11 @@ export function WorkDetail({ work }: WorkDetailProps) {
         </div>
       </div>
 
+      <Card className="p-6 sm:p-8 shadow-sm border border-border/60 bg-card">
+        <h3 className="mb-6 font-mono text-2xl font-semibold text-foreground">Мисловна Карта</h3>
+        <MindMap work={work} />
+      </Card>
+
       <Card className="p-6 sm:p-8 shadow-sm border border-border/60 bg-card/50">
         <div className="flex items-start gap-4 mb-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
@@ -43,7 +49,7 @@ export function WorkDetail({ work }: WorkDetailProps) {
 
       {work.analysis.themes && work.analysis.themes.length > 0 && (
         <Card className="p-6 sm:p-8 shadow-sm border border-border/60 bg-card">
-          <h3 className="mb-6 font-mono text-2xl font-semibold text-foreground">Themes</h3>
+          <h3 className="mb-6 font-mono text-2xl font-semibold text-foreground">Теми</h3>
           <div className="space-y-6">
             {work.analysis.themes.map((theme, index) => (
               <div key={index} className="border-l-4 border-primary/30 pl-6 py-2">
@@ -57,7 +63,7 @@ export function WorkDetail({ work }: WorkDetailProps) {
 
       {work.analysis.motifs && work.analysis.motifs.length > 0 && (
         <Card className="p-6 sm:p-8 shadow-sm border border-border/60 bg-card">
-          <h3 className="mb-6 font-mono text-2xl font-semibold text-foreground">Motifs</h3>
+          <h3 className="mb-6 font-mono text-2xl font-semibold text-foreground">Мотиви</h3>
           <div className="space-y-6">
             {work.analysis.motifs.map((motif, index) => (
               <div key={index} className="border-l-4 border-accent/40 pl-6 py-2">
@@ -71,7 +77,7 @@ export function WorkDetail({ work }: WorkDetailProps) {
 
       {work.analysis.characters && work.analysis.characters.length > 0 && (
         <Card className="p-6 sm:p-8 shadow-sm border border-border/60 bg-card">
-          <h3 className="mb-6 font-mono text-2xl font-semibold text-foreground">Characters</h3>
+          <h3 className="mb-6 font-mono text-2xl font-semibold text-foreground">Герои</h3>
           <div className="space-y-6">
             {work.analysis.characters.map((character, index) => (
               <div key={index} className="border-l-4 border-primary/30 pl-6 py-2">
@@ -85,7 +91,7 @@ export function WorkDetail({ work }: WorkDetailProps) {
 
       {work.analysis.analysis_summary && (
         <Card className="p-6 sm:p-8 shadow-sm border border-border/60 bg-card">
-          <h3 className="mb-6 font-mono text-2xl font-semibold text-foreground">Analysis</h3>
+          <h3 className="mb-6 font-mono text-2xl font-semibold text-foreground">Анализ</h3>
           <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
             {work.analysis.analysis_summary}
           </p>
