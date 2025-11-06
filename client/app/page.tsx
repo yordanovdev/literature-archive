@@ -9,7 +9,7 @@ import type { WorkData } from "@/lib/types"
 import { BookOpen } from "lucide-react"
 
 export default function Page() {
-  const [works] = useState<WorkData[]>(sampleData.works)
+  const [works] = useState<WorkData[]>(sampleData)
   const [selectedWork, setSelectedWork] = useState<WorkData | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
   const workDetailRef = useRef<HTMLDivElement>(null)
