@@ -68,22 +68,22 @@ export function MindMap({ work }: MindMapProps) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
       {/* Central node */}
       <div className="flex justify-center mb-8">
-        <div className="relative">
-          <div className="rounded-2xl border-2 border-primary bg-primary/5 px-8 py-6 text-center shadow-lg backdrop-blur-sm">
-            <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-medium">Литературно Произведение</p>
-            <h4 className="mt-2 text-2xl font-bold text-foreground">{data.title}</h4>
-            <p className="mt-2 text-sm text-muted-foreground">{data.author}</p>
-            <div className="mt-3 flex items-center justify-center gap-2">
+        <div className="relative max-w-full">
+          <div className="rounded-2xl border-2 border-primary bg-primary/5 px-4 sm:px-8 py-4 sm:py-6 text-center shadow-lg backdrop-blur-sm">
+            <p className="text-xs uppercase tracking-[0.15em] sm:tracking-[0.25em] text-muted-foreground font-medium">Литературно Произведение</p>
+            <h4 className="mt-2 text-xl sm:text-2xl font-bold text-foreground wrap-break-word">{data.title}</h4>
+            <p className="mt-2 text-xs sm:text-sm text-muted-foreground wrap-break-word">{data.author}</p>
+            <div className="mt-3 flex items-center justify-center gap-2 flex-wrap">
               {data.year && (
                 <Badge variant="secondary" className="text-xs">
                   {data.year}
                 </Badge>
               )}
               {data.genre && (
-                <Badge variant="outline" className="text-xs">
+                <Badge variant="outline" className="text-xs max-w-full wrap-break-word">
                   {data.genre}
                 </Badge>
               )}
@@ -93,10 +93,10 @@ export function MindMap({ work }: MindMapProps) {
       </div>
 
       {/* Branches */}
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
         {/* Themes */}
         {data.themes.length > 0 && (
-          <div className="space-y-3">
+          <div className="space-y-3 min-w-0">
             <div className="flex items-center gap-2">
               <div className="h-8 w-1 rounded-full bg-linear-to-b from-primary to-primary/40" />
               <h5 className="font-semibold text-lg text-foreground">Теми</h5>
@@ -106,11 +106,11 @@ export function MindMap({ work }: MindMapProps) {
                 <button
                   key={index}
                   onClick={() => handleItemClick("theme", theme)}
-                  className="w-full group relative rounded-lg border border-primary/20 bg-primary/5 px-4 py-2.5 transition-all hover:border-primary/40 hover:bg-primary/10 hover:shadow-md cursor-pointer"
+                  className="w-full group relative rounded-lg border border-primary/20 bg-primary/5 px-3 sm:px-4 py-2.5 transition-all hover:border-primary/40 hover:bg-primary/10 hover:shadow-md cursor-pointer"
                 >
-                  <div className="flex items-start gap-2">
+                  <div className="flex items-start gap-2 min-w-0">
                     <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary group-hover:scale-125 transition-transform" />
-                    <p className="text-sm font-medium text-foreground leading-snug text-left">{theme}</p>
+                    <p className="text-sm font-medium text-foreground leading-snug text-left wrap-break-word min-w-0">{theme}</p>
                   </div>
                 </button>
               ))}
@@ -120,7 +120,7 @@ export function MindMap({ work }: MindMapProps) {
 
         {/* Motifs */}
         {data.motifs.length > 0 && (
-          <div className="space-y-3">
+          <div className="space-y-3 min-w-0">
             <div className="flex items-center gap-2">
               <div className="h-8 w-1 rounded-full bg-linear-to-b from-accent to-accent/40" />
               <h5 className="font-semibold text-lg text-foreground">Мотиви</h5>
@@ -130,11 +130,11 @@ export function MindMap({ work }: MindMapProps) {
                 <button
                   key={index}
                   onClick={() => handleItemClick("motif", motif)}
-                  className="w-full group relative rounded-lg border border-accent/20 bg-accent/5 px-4 py-2.5 transition-all hover:border-accent/40 hover:bg-accent/10 hover:shadow-md cursor-pointer"
+                  className="w-full group relative rounded-lg border border-accent/20 bg-accent/5 px-3 sm:px-4 py-2.5 transition-all hover:border-accent/40 hover:bg-accent/10 hover:shadow-md cursor-pointer"
                 >
-                  <div className="flex items-start gap-2">
+                  <div className="flex items-start gap-2 min-w-0">
                     <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-accent group-hover:scale-125 transition-transform" />
-                    <p className="text-sm font-medium text-foreground leading-snug text-left">{motif}</p>
+                    <p className="text-sm font-medium text-foreground leading-snug text-left wrap-break-word min-w-0">{motif}</p>
                   </div>
                 </button>
               ))}
@@ -144,7 +144,7 @@ export function MindMap({ work }: MindMapProps) {
 
         {/* Characters */}
         {data.characters.length > 0 && (
-          <div className="space-y-3">
+          <div className="space-y-3 min-w-0">
             <div className="flex items-center gap-2">
               <div className="h-8 w-1 rounded-full bg-linear-to-b from-chart-1 to-chart-1/40" />
               <h5 className="font-semibold text-lg text-foreground">Герои</h5>
@@ -154,11 +154,11 @@ export function MindMap({ work }: MindMapProps) {
                 <button
                   key={index}
                   onClick={() => handleItemClick("character", character)}
-                  className="w-full group relative rounded-lg border border-chart-1/20 bg-chart-1/5 px-4 py-2.5 transition-all hover:border-chart-1/40 hover:bg-chart-1/10 hover:shadow-md cursor-pointer"
+                  className="w-full group relative rounded-lg border border-chart-1/20 bg-chart-1/5 px-3 sm:px-4 py-2.5 transition-all hover:border-chart-1/40 hover:bg-chart-1/10 hover:shadow-md cursor-pointer"
                 >
-                  <div className="flex items-start gap-2">
+                  <div className="flex items-start gap-2 min-w-0">
                     <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-chart-1 group-hover:scale-125 transition-transform" />
-                    <p className="text-sm font-medium text-foreground leading-snug text-left">{character}</p>
+                    <p className="text-sm font-medium text-foreground leading-snug text-left wrap-break-word min-w-0">{character}</p>
                   </div>
                 </button>
               ))}

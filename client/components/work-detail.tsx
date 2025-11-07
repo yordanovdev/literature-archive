@@ -11,17 +11,17 @@ export function WorkDetail({ work }: WorkDetailProps) {
   return (
     <div className="space-y-8">
       <div className="border-b border-border/40 pb-6">
-        <h2 className="font-mono text-4xl sm:text-5xl font-bold text-foreground text-balance leading-tight">
+        <h2 className="font-mono text-4xl sm:text-5xl font-bold text-foreground text-balance leading-tight wrap-break-word">
           {work.analysis.name}
         </h2>
-        <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+        <div className="mt-3 flex flex-wrap items-center gap-2 sm:gap-3 text-sm text-muted-foreground">
           {work.analysis.year && (
-            <span className="font-medium text-accent">{work.analysis.year}</span>
+            <span className="font-medium text-accent shrink-0">{work.analysis.year}</span>
           )}
           {work.analysis.genre && (
             <>
-              {work.analysis.year && <span className="text-border">•</span>}
-              <span className="font-medium">{work.analysis.genre}</span>
+              {work.analysis.year && <span className="text-border shrink-0">•</span>}
+              <span className="font-medium wrap-break-word">{work.analysis.genre}</span>
             </>
           )}
         </div>

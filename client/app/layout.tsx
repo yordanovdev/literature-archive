@@ -19,11 +19,20 @@ export const metadata: Metadata = {
     title: "Литературен Архив",
     description: "Колекция от литературни произведения с подробен анализ",
     siteName: "Литературен Архив",
+    images: [
+      {
+        url: "/icon.png",
+        width: 1200,
+        height: 630,
+        alt: "Литературен Архив - Колекция от литературни произведения",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Литературен Архив",
     description: "Колекция от литературни произведения с подробен анализ",
+    images: ["/icon.png"],
   },
   icons: {
     icon: [
